@@ -9,7 +9,7 @@
 
 ## Run
 ```
-mvn spring-boot:run
+java -jar target/bw-0.1.jar
 ```
 
 ## Test
