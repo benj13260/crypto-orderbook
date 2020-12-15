@@ -1,6 +1,7 @@
 package com.cryptoag.orderbook.controller;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import com.cryptoag.orderbook.model.Order;
 import com.cryptoag.orderbook.service.OrderbookService;
@@ -44,6 +45,7 @@ public class OrderController {
 
     @GetMapping("/start")
     public void startPriceFeedStream() {
-        priceFeedService.getPriceFeed();
+        CompletableFuture.runAsync(() -> { priceFeedService.getPriceFeed();});
+
     }
 }
