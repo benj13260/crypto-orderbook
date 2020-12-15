@@ -12,6 +12,7 @@ public class Order {
     }
 
     private Integer id;
+    private Integer nonce;
     private Integer account_id;
     private float price_limit;
     private float amount;

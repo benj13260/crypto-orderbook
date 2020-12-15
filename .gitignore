@@ -12,3 +12,5 @@ target/classe/*
 target/maven-status/*
 target/surefire-reports/*
 target/classes/*
+target/test-classes/*
+target/maven-archiver/*

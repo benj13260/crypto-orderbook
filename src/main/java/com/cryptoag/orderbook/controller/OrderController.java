@@ -1,10 +1,10 @@
 package com.cryptoag.orderbook.controller;
 
-import java.util.concurrent.CompletableFuture;
+import java.util.List;
 
 import com.cryptoag.orderbook.model.Order;
-import com.cryptoag.orderbook.model.Price;
 import com.cryptoag.orderbook.service.OrderbookService;
+import com.cryptoag.orderbook.service.PriceFeedService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +22,10 @@ public class OrderController {
     @Autowired
     OrderbookService orderbookService;
 
+    @Autowired
+    PriceFeedService priceFeedService;
+
+
     @GetMapping("/orders/{id}")
     Order fetchOrderDetails(@PathVariable Integer id) {
         return orderbookService.fetchOrderDetails(id);
@@ -33,22 +37,13 @@ public class OrderController {
         return orderbookService.createLimitOrder(account);
     }
 
-    @GetMapping("/start")
-    public void startPriceFeed() { 
-        CompletableFuture.runAsync(() -> {
-            while (1 != 0) {
-                Price p = orderbookService.getPriceFeedService().getPriceFeed();
-                log.info("Price :"+p.getPrice());
-                orderbookService.executeOrders(p);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    @GetMapping("/orders")
+    public List<Order> fetchAccounts(){
+        return orderbookService.ListOrders();
     }
 
-
-
+    @GetMapping("/start")
+    public void startPriceFeedStream() {
+        priceFeedService.getPriceFeed();
+    }
 }

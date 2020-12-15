@@ -20,28 +20,27 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class AccountController {
 
-  @Autowired 
+  @Autowired
   OrderbookService orderbookService;
 
-	@GetMapping("/accounts/{id}")
-  Account fetchAccountDetails(@PathVariable Integer id){
-	  return orderbookService.fetchAccountDetails(id);
+  @GetMapping("/accounts/{id}")
+  Account fetchAccountDetails(@PathVariable Integer id) {
+    return orderbookService.fetchAccountDetails(id);
   }
-    
+
   @PostMapping("/account")
-  public ResponseEntity<Object> createAccount(@RequestBody Account account){
+  public ResponseEntity<Object> createAccount(@RequestBody Account account) {
     log.info(account.toString());
-    try{
-      return new ResponseEntity<>(orderbookService.createAccount(account),HttpStatus.OK);
-    }catch(Exception e){
+    try {
+      return new ResponseEntity<>(orderbookService.createAccount(account), HttpStatus.OK);
+    } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
   }
 
-
   @GetMapping("/accounts")
-  public List<Account> fetchAccounts(){
-	  return orderbookService.ListAccounts();
+  public List<Account> fetchAccounts() {
+    return orderbookService.ListAccounts();
   }
 
 }
