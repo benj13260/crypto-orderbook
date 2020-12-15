@@ -11,6 +11,7 @@
 ```
 java -jar target/bw-0.1.jar
 ```
+Price feed is activated
 
 ## Test
 ```
@@ -18,10 +19,6 @@ mvn surefire:test
 ```
   
 ## Endpoints
- - Start the process to update the price
- ```
-  curl -X GET http://localhost:8080/start
-  ```
   - Create Account 
  ```
   curl -X POST http://localhost:8080/account \

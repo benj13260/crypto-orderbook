@@ -1,7 +1,10 @@
 package com.cryptoag.orderbook.service;
 
 import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.SubmissionPublisher;
+
+import javax.annotation.PostConstruct;
 
 import com.cryptoag.orderbook.data.CryptoDB;
 import com.cryptoag.orderbook.model.Price;
@@ -34,9 +37,15 @@ public class PriceFeedService {
 
     Flux<Price> fluxPrice;
 
+    public CompletableFuture<Void> completableFuture;
+
     public PriceFeedService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl(FEED_URL_HOST).build();
-
+    }
+    
+    @PostConstruct
+    public void init() {
+    	completableFuture = CompletableFuture.runAsync(() -> { this.getPriceFeed(); });
     }
 
     public void getPriceFeed() {
@@ -60,8 +69,7 @@ public class PriceFeedService {
                 log.error("Price feed server issue / Verify URL");
                 break;
             } catch (Exception e) {
-                e.printStackTrace();
-                break;
+                return;
             }
         }
         pricePublisher.close();

@@ -11,6 +11,7 @@ import com.cryptoag.orderbook.model.Order;
 import com.cryptoag.orderbook.model.Price;
 import com.cryptoag.orderbook.service.OrderExecution;
 import com.cryptoag.orderbook.service.OrderbookService;
+import com.cryptoag.orderbook.service.PriceFeedService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.junit.jupiter.api.Test;
@@ -32,15 +33,17 @@ public class OrderbookServiceTests {
     @Autowired
     CryptoDB db;
 
-
-    @Test
-    void call() {
-        //f.getPriceFeed().then().subscribe(System.out::println);
-    }
+    @Autowired
+    PriceFeedService pf;
 
     @Test
     void Orders() throws JsonProcessingException, BadRequestException, InterruptedException {
-       
+        
+        // Stop automatic price feed
+        try {
+            pf.completableFuture.complete(null);
+        } catch (Exception e) {}
+
         SubmissionPublisher<String> pricePublisher = new SubmissionPublisher<String>();
         pricePublisher.subscribe(orderExecution.getOrderExecutionSubscriberInstance());
  
